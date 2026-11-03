@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* The site is light only: the component's dark: variants only apply under a .dark ancestor. */
+@custom-variant dark (&:is(.dark *));
+
+/* Pizza palette: tomato, cheese, crust, basil on cream */
+@theme {
+  --color-oven-dark: #3b1510;
+  --color-cheese: #ffd166;
+  --color-tomato: #c23a25;
+  --color-crust: #e8a24b;
+  --color-basil: #657a38;
+  --color-cream: #fff8ec;
+  --color-flour: #f3e6d2;
+  --color-frosted-glass: #dccbb4;
+  --color-ash: #bba995;
+  --color-pewter: #6b5a52;
+  --color-ink: #000000;
+
+  /* Desktop sizes are exactly the originals; below that they scale down smoothly (rem-based so user
+     font settings are respected). micro was 10px: raised to 12px for legibility. */
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.2;
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.5;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.4;
+  --text-body-sm: 1rem;
+  --text-body-sm--line-height: 1.5;
+  --text-body: 1.125rem;
+  --text-body--line-height: 1.3;
+  --text-body--letter-spacing: -0.18px;
+  --text-subheading: clamp(1.25rem, 1.05rem + 0.9vw, 1.5rem);
+  --text-subheading--line-height: 1.2;
+  --text-subheading--letter-spacing: -0.48px;
+  --text-heading-sm: clamp(1.625rem, 1.3rem + 1.4vw, 2rem);
+  --text-heading-sm--line-height: 1.2;
+  --text-heading: clamp(1.75rem, 1.4rem + 1.6vw, 2.25rem);
+  --text-heading--line-height: 1.1;
+  --text-heading-lg: clamp(2rem, 1.6rem + 1.8vw, 2.5rem);
+  --text-heading-lg--line-height: 1.1;
+  --text-heading-lg--letter-spacing: -0.4px;
+  --text-display: clamp(2.25rem, 1.8rem + 2vw, 3rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.72px;
+
+  /* Token names used by components/ui/sushi-conveyor-menu.tsx (shadcn naming), mapped onto the pizza
+     palette so that component can stay byte-for-byte as delivered. */
+  --color-background: var(--color-cream);
+  --color-foreground: var(--color-oven-dark);
+  --color-card: #fffcf5;
+  --color-card-foreground: var(--color-oven-dark);
+  --color-muted: var(--color-flour);
+  --color-muted-foreground: var(--color-pewter);
+  --color-border: var(--color-frosted-glass);
+  --color-ring: var(--color-tomato);
+  --color-chart-1: var(--color-basil);
+  --color-chart-2: var(--color-cheese);
+  --color-chart-3: var(--color-crust);
+  --color-chart-4: var(--color-tomato);
+  --color-chart-5: #8f2a1a;
+
+  /* Used by components/ui/menu-item-card.tsx */
+  --color-primary: var(--color-oven-dark);
+  --color-primary-foreground: var(--color-cream);
+  --color-green-600: var(--color-basil);
+  --color-red-600: var(--color-tomato);
+  --radius-xl: 16px;
+
+  --radius-input: 8px;
+  --radius-card: 16px;
+  --radius-panel: 32px;
+  --radius-pill: 1000px;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@utility font-whisper {
+  font-weight: 350;
+}
+
+html {
+  background: var(--color-cream);
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-oven-dark);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-basil);
+  outline-offset: 3px;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--color-oven-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  overflow-x: clip;
+}
+
+/* Endless strip (Stories) */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+}
+
+/* Invisible 44px touch target: keeps the visual size, meets WCAG 2.2 target size. */
+.hit {
+  position: relative;
+}
+.hit::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+@media print {
+  header, nav, footer, [data-noprint] { display: none !important; }
+  body { background: #fff !important; }
+}
+
+/* Phones, app pages and their dialogs: one step smaller type and tighter buttons, so menus, cart and checkout
+   are not oversized. The 44px touch target stays (see .hit), only what you see gets smaller. */
+@media (max-width: 639px) {
+  .compact {
+    --text-caption: 0.8125rem;
+    --text-body-sm: 0.875rem;
+    --text-body: 1rem;
+    --text-subheading: 1.125rem;
+    --text-heading-sm: 1.375rem;
+    --text-heading-lg: 1.625rem;
+    --text-display: 1.875rem;
+  }
+  .compact .btn-lg {
+    padding: 0.5rem 1.125rem;
+  }
+  .compact .btn-sm {
+    padding: 0.3125rem 0.875rem;
+  }
+  .compact .field-input {
+    padding: 0.625rem 1rem;
+  }
+}
